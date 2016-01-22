@@ -17,6 +17,8 @@ public class FileSetTransformation {
 		File saveFile = new File(savePath);
 		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(
 				saveFile)));
+		
+		//记录文件数量
 		File rootDir = new File(root);
 		String fileNames[] = rootDir.list();
 		int count = 0;
@@ -27,6 +29,7 @@ public class FileSetTransformation {
 		writer.print("total:");
 		writer.print(count);
 		writer.print(" ");
+		
 		for (int i = 0; i < fileNames.length; i++) {
 			String classPath = root + fileNames[i] + "/";
 			writer.print(fileNames[i]);
@@ -44,12 +47,20 @@ public class FileSetTransformation {
 		writer.close();
 	}
 
+	/**
+	 * 
+	 * @param className
+	 * @param classPath
+	 * @param writer
+	 */
 	public void classTrainformation(String className, String classPath,
 			PrintWriter writer) {
 		File classFile = new File(classPath);
-		String[] filelist = classFile.list();
+		String[] filelist = classFile.list();  //某个类下的全部文件
+		
 		for (int i = 0; i < filelist.length; i++) {
 			String filePath = classPath + filelist[i];
+			
 			String content = DocumentReader.readFile(filePath);
 			fileTrainFormation(className, content, writer);
 		}

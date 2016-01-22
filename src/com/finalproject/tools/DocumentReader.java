@@ -9,7 +9,7 @@ import java.util.Scanner;
  */
 public class DocumentReader {
 	/**
-	 * 读取文档
+	 * 读取文档,一个文档是一行
 	 * @param path
 	 * @return 表示文档的字符串
 	 */
@@ -30,6 +30,6 @@ public class DocumentReader {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(DocumentReader.readFile("c:/test.epf"));
+		System.out.println(DocumentReader.readFile("file/stop_words_zh.txt"));
 	}
 }
