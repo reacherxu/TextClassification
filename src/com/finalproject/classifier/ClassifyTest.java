@@ -368,8 +368,7 @@ public class ClassifyTest {
 				String outputPath = "result/" + function + "_" + lemon + ".txt";
 				test.outputResult(outputPath);
 				System.out.println();
-				System.out
-						.println("********************************************");
+				System.out.println("********************************************");
 				System.out.println();
 			}
 		}
