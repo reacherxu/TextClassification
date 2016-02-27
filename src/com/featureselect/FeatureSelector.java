@@ -30,6 +30,7 @@ public class FeatureSelector {
 	public static final String MI = "MI";
 	public static final String CE = "CE";
 	public static final String X2 = "X2";
+	public static final String X2_Impo = "X2_Impo";
 	public static final String IMPROVE = "IMPROVE";
 	
 	private FeatureManager featureManager;
@@ -154,12 +155,12 @@ public class FeatureSelector {
 	/**
 	 * 特征选择过程
 	 * @param function
-	 * @param lemon
+	 * @param dimension
 	 * @return
 	 */
-	public FeatureManager doFeatureSelect(String function, int lemon) {
+	public FeatureManager doFeatureSelect(String function, int dimension) {
 		Log.log("selecting features with function at " + function
-				+ " and dimension at " + lemon + "......");
+				+ " and dimension at " + dimension + "......");
 		
 		MarkedFeature[] markedFeatures = new MarkedFeature[getFeatureCount()];
 		String[] featureStrings = getFeature();
@@ -174,7 +175,7 @@ public class FeatureSelector {
 		// System.out.println(getFeatureCount());
 		count = 0;
 		bubble_sort(markedFeatures);
-		FeatureManager result = select(markedFeatures, lemon);
+		FeatureManager result = select(markedFeatures, dimension);
 		return result;
 	}
 

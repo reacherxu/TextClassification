@@ -37,7 +37,7 @@ public class DocumentVector {
 		featureCount = new double[featureVectorSpace.getFeatureCount()];
 		for (int i = 0; i < featureVectorSpace.getFeatureCount(); i++) {
 			String name = featureVectorSpace.getFeatureName(i);
-			int count = 0;
+//			int count = 0;
 			if (document.containsKey(name)) {
 				featureCount[i] = document.get(name);
 			} else {

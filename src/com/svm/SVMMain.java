@@ -13,7 +13,7 @@ public class SVMMain {
 	public static void main(String[] args) throws IOException{
 		
 		//scale参数
-		/*String[] sarg_train = {"-l","0","-o","D:/fudan/fudan_svm_scale.train","D:/fudan/train.txt"};
+		String[] sarg_train = {"-l","0","-o","D:/fudan/fudan_svm_scale.train","D:/fudan/train.txt"};
 		String[] sarg_test = {"-l","0","-o","D:/fudan/fudan_svm_scale.test","D:/fudan/test.txt"};
 
 		System.out.println("训练集开始缩放");
@@ -24,13 +24,13 @@ public class SVMMain {
 		System.out.println("测试集开始缩放");
 		scale = new svm_scale();
 		scale.main(sarg_test);
-		System.out.println("缩放结束");*/
+		System.out.println("缩放结束");
 		
 		
 		//train参数
-		String[] arg = {"-t","0","D:/fudan/fudan_svm_scale.train","corpus_train/svm.model"};
+		String[] arg = {"-t","0","D:/fudan/fudan_svm_scale.train","svm.model"};
 		//predict参数
-		String[] parg = {"D:/fudan/fudan_svm_scale.test","corpus_train/svm.model","D:/fudan/result.txt"};
+		String[] parg = {"D:/fudan/fudan_svm_scale.test","svm.model","D:/fudan/result.txt"};
 		
 		System.out.println("训练开始");
 		svm_train.main(arg);

@@ -33,6 +33,9 @@ public class EvaluateFactory {
 		else if(name.equals("X2")){
 			return new Evaluate_X2();
 		}
+		else if(name.equals("X2_Impo")){
+			return new Evaluate_X2_Impo();
+		}
 		else if(name.equals("IMPROVE")){
 			return new Evaluate_IDTC();
 		}

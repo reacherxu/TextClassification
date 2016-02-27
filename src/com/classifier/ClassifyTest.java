@@ -1,15 +1,21 @@
 package com.classifier;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.classmanage.ClassManager;
 import com.featureselect.FeatureSelector;
+import com.svm.svm_predict;
+import com.svm.svm_scale;
+import com.svm.svm_train;
 import com.tools.Log;
 
 /**
@@ -20,8 +26,10 @@ import com.tools.Log;
  */
 public class ClassifyTest {
 
-	private String defaultTrainSetPath = "c:/train/";
-	private String defaultTestSetPath = "c:/test/";
+	@SuppressWarnings("unused")
+	private String defaultTrainSetPath = "d:/train/";
+	@SuppressWarnings("unused")
+	private String defaultTestSetPath = "d:/test/";
 	private int[] testFileCount;
 	private int[][] classifyResult;
 	private double[] recalls;
@@ -158,6 +166,58 @@ public class ClassifyTest {
 		recalls = new double[count];
 		precisions = new double[count];
 		test(fileSet);
+	}
+	
+	
+	public void test(FileSet testSet, String result_path) {
+		Log.log("begin testing!");
+		int count = classManager.getClassCount();
+		testFileCount = new int[count];
+		classifyResult = new int[count][count];
+		recalls = new double[count];
+		precisions = new double[count];
+		
+		String[] classnameStrings = classManager.getClassNames();
+		
+		//TODO testset 必须要有和trainset一样的结构
+		for (int i = 0; i < classnameStrings.length; i++) {
+			int classID = classManager.getClassID(classnameStrings[i]);
+			testFileCount[classID] = testSet.getCount(classnameStrings[i]);
+		}
+		
+		ArrayList<Integer> classifyID = readResult(result_path);
+		for (int i = 0; i < testSet.size(); i++) {
+			Document document = testSet.get(i);
+			String className = document.getClassNameString();
+			int classID = classManager.getClassID(className);
+			classifyResult[classID][classifyID.get(i)]++;
+		}
+
+		for (int i = 0; i < classifyResult.length; i++) {
+			for (int j = 0; j < classifyResult.length; j++)
+				System.out.print(classifyResult[i][j] + "\t");
+			System.out.println();
+		}
+		doTestCalculate();
+		Log.log("testing is done!");
+	}
+
+	private ArrayList<Integer> readResult(String result_path) {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(new File(result_path)));
+			while(reader.ready()) {
+				String line = reader.readLine();
+				result.add((int)Double.parseDouble(line));
+			}
+			reader.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	/**
@@ -388,24 +448,26 @@ public class ClassifyTest {
 
 	/**
 	 * @param args
-	 * @throws FileNotFoundException
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException {
 
 		//读入文档集
-		FileSet trainSet = new FileSet("D:\\data\\fudan_subset_subset\\trainSetFiles.txt");
-		FileSet testSet = new FileSet("D:\\data\\fudan_subset_subset\\testSetFiles.txt");
+		FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
+		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
 		ClassifyTest test = new ClassifyTest();
 		//分类准备
 		test.prepare(trainSet);
 		
-		/*String function = FeatureSelector.X2;
-		int dimension = 500;
-		String train_path = "D:/train.txt";
-		test.svm_train_dateset(function, dimension,train_path);
-		String test_path = "D:/test.txt";
-		test.svm_test_dateset(testSet, function, dimension, test_path);
-		*/
+//		String function = FeatureSelector.X2;
+//		int dimension = 500;
+		
+//		String result_path = "D:/fudan/result.txt";
+//		test.svm_predict(function, dimension, testSet, result_path);
+//		test.test(testSet, result_path);
+//		
+//		String outputPath = "svm_result/" + function + "_" + dimension + ".txt";
+//		test.outputResult(outputPath);
 		
 		//读入参数列表
 		Scanner scanner = new Scanner(new File("file/parameters_test"));
@@ -415,8 +477,13 @@ public class ClassifyTest {
 				String[] parameters = line.split(" ");
 				String function = parameters[0];
 				int dimension = Integer.parseInt(parameters[1]);
-				test.test(testSet, function, dimension);
-				String outputPath = "K/" + function + "_" + dimension + ".txt";
+				
+				String result_path = "D:/fudan/result.txt";
+				test.svm_predict(function, dimension, testSet, result_path);
+				test.test(testSet, result_path);
+				
+//				test.test(testSet, function, dimension);
+				String outputPath = "svm_result/" + function + "_" + dimension + ".txt";
 				test.outputResult(outputPath);
 				System.out.println();
 				System.out.println("********************************************");
@@ -425,4 +492,44 @@ public class ClassifyTest {
 		}
 		scanner.close();
 	}
+
+	private void svm_predict(String function, int dimension, FileSet testSet,
+			String result_path) throws IOException {
+		String train_path = "D:/fudan/train.txt";
+		svm_train_dateset(function, dimension,train_path);
+		String test_path = "D:/fudan/test.txt";
+		svm_test_dateset(testSet, function, dimension, test_path);
+		
+		//scale参数
+		String train_scale_path = "D:/fudan/fudan_svm_scale.train";
+		String test_scale_path = "D:/fudan/fudan_svm_scale.test";
+		String[] sarg_train = {"-l","0","-o", train_scale_path,train_path};
+		String[] sarg_test = {"-l","0","-o", test_scale_path,test_path};
+
+		Log.log("训练集开始缩放");
+		svm_scale.main(sarg_train);
+		Log.log("训练集缩放结束");
+
+		Log.log("测试集开始缩放");
+		svm_scale.main(sarg_test);
+		Log.log("测试集缩放结束");
+
+
+		//train参数
+		String[] arg = {"-t","0",train_scale_path,"svm.model"};
+		//predict参数
+		String[] parg = {test_scale_path,"svm.model", result_path};
+
+		Log.log("训练开始");
+		svm_train.main(arg);
+		Log.log("训练结束");
+
+		Log.log("分类开始");
+		svm_predict.main(parg);
+		Log.log("分类结束");
+		
+		
+		
+	}
+
 }
