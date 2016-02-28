@@ -15,6 +15,7 @@ public class DocumentVector {
 
 	int classID;
 	double[] featureCount;
+	private String docPosition;
 
 	public DocumentVector(FeatureVectorSpace featureVectorSpace, int classID,
 			String path) {
@@ -35,6 +36,8 @@ public class DocumentVector {
 			Document document, ClassManager classManager) {
 		classID = classManager.getClassID(document.getClassNameString());
 		featureCount = new double[featureVectorSpace.getFeatureCount()];
+		docPosition = document.getDocPosition();
+		
 		for (int i = 0; i < featureVectorSpace.getFeatureCount(); i++) {
 			String name = featureVectorSpace.getFeatureName(i);
 //			int count = 0;
@@ -50,6 +53,10 @@ public class DocumentVector {
 			// totalFileCountOfFeature=featureVectorSpace.getFileCount(featureVectorSpace.getFeatureName(i));
 			// featureCount[i]=count*Math.log10(totalFileCount/totalFileCountOfFeature+0.01);
 		}
+	}
+
+	public String getDocPosition() {
+		return docPosition;
 	}
 
 	public double[] getFeatureCount() {

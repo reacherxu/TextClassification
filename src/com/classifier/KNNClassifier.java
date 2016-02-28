@@ -67,6 +67,14 @@ public class KNNClassifier {
 	public int classifyByID(Document document) {
 		return core.classifyByID(document);
 	}
+	
+	/**
+	 * 最大相似度的K篇文章
+	 * @param document
+	 */
+	public void maxSimilarity(Document document) {
+		core.maxSimilarity(document);
+	}
 
 	public String classifyByName(String filePath) {
 		return core.classifyByName(filePath);

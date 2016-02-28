@@ -65,8 +65,32 @@ public class FileSetTransformation {
 			String filePath = classPath + filelist[i];
 			
 			String content = DocumentReader.readFile(filePath);
+			
+			writer.print(className + ":" + filelist[i]);
+			writer.print(" ");
 			fileTrainFormation(className, content, writer);
 		}
+	}
+	
+	/**
+	 * 对单个文件进行转换
+	 * @param file
+	 */
+	public void fileTransformation(String file) {
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(new BufferedWriter(new FileWriter(
+					"d:/document_test.txt")));
+			String content = DocumentReader.readFile(file);
+			
+			fileTrainFormation(null, content, writer);
+			
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Log.log("File transformation fininshed");
+		
 	}
 
 	/**
@@ -91,8 +115,7 @@ public class FileSetTransformation {
 				}
 			}
 		}
-		writer.print(className);
-		writer.print(" ");
+		
 		for (String word : map.keySet()) {
 			writer.print(word);
 			writer.print(":");
@@ -114,9 +137,10 @@ public class FileSetTransformation {
 	 */
 	public static void main(String[] args) throws IOException {
 		FileSetTransformation transformation = new FileSetTransformation();
-		System.out.println("transformating test files......");
-		transformation.trainformation("D:\\data\\fudan_subset_2\\test", "D:\\data\\fudan_subset_2\\testSetFiles.txt");
-		System.out.println("transformating train files......");
-		transformation.trainformation("D:\\data\\fudan_subset_2\\train", "D:\\data\\fudan_subset_2\\trainSetFiles.txt");
+		transformation.fileTransformation("d:/C11-Space0028.txt");
+//		System.out.println("transformating test files......");
+//		transformation.trainformation("D:\\temp\\fudan_subset_subset\\test", "D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
+//		System.out.println("transformating train files......");
+//		transformation.trainformation("D:\\temp\\fudan_subset_subset\\train", "D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
 	}
 }

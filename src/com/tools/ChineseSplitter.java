@@ -32,7 +32,7 @@ public class ChineseSplitter {
 	 */
 	public String[] split(String source) {
 		try {
-			String resultString = ictclas30.NLPIR_ParagraphProcess(source, 0);
+			String resultString = ictclas30.NLPIR_ParagraphProcess(source, 1);
 			//	            System.out.println("分词结果为：\n " + resultString);
 
 			String[] allWords = resultString.split("\\s");

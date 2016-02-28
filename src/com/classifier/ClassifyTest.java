@@ -16,6 +16,7 @@ import com.featureselect.FeatureSelector;
 import com.svm.svm_predict;
 import com.svm.svm_scale;
 import com.svm.svm_train;
+import com.tools.FileSetTransformation;
 import com.tools.Log;
 
 /**
@@ -451,9 +452,21 @@ public class ClassifyTest {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-
-		//读入文档集
 		FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
+		ClassifyTest test = new ClassifyTest();
+		//分类准备
+		String function = FeatureSelector.X2;
+		int dimension = 1000;
+		test.train(trainSet,function,dimension);
+		
+		FileSetTransformation transformation = new FileSetTransformation();
+		transformation.fileTransformation("d:/C32-Agriculture0629.txt");
+		Document tmpDoc = new Document();
+		test.docPrediction(tmpDoc);
+		test.similarDocs(tmpDoc);
+		
+		//读入文档集
+	/*	FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
 		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
 		ClassifyTest test = new ClassifyTest();
 		//分类准备
@@ -478,21 +491,40 @@ public class ClassifyTest {
 				String function = parameters[0];
 				int dimension = Integer.parseInt(parameters[1]);
 				
-				String result_path = "D:/fudan/result.txt";
-				test.svm_predict(function, dimension, testSet, result_path);
-				test.test(testSet, result_path);
+//				String result_path = "D:/fudan/result.txt";
+//				test.svm_predict(function, dimension, testSet, result_path);
+//				test.test(testSet, result_path);
 				
-//				test.test(testSet, function, dimension);
-				String outputPath = "svm_result/" + function + "_" + dimension + ".txt";
+				test.test(testSet, function, dimension);
+				String outputPath = "result_1/" + function + "_" + dimension + ".txt";
 				test.outputResult(outputPath);
 				System.out.println();
 				System.out.println("********************************************");
 				System.out.println();
 			}
 		}
-		scanner.close();
+		scanner.close();*/
 	}
 
+	/**
+	 * 寻找最相似的文档
+	 * @param tmpDoc
+	 */
+	private void similarDocs(Document tmpDoc) {
+		classifier.maxSimilarity(tmpDoc);
+	}
+
+	/**
+	 * 为单篇文档预测
+	 * @param tmpDoc
+	 */
+	private void docPrediction(Document tmpDoc) {
+		int classifyID = classifier.classifyByID(tmpDoc);
+		System.out.println("预测为：" + classManager.getClassName(classifyID));
+		
+	}
+
+	@SuppressWarnings("unused")
 	private void svm_predict(String function, int dimension, FileSet testSet,
 			String result_path) throws IOException {
 		String train_path = "D:/fudan/train.txt";

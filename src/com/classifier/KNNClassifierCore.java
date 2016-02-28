@@ -1,6 +1,8 @@
 package com.classifier;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.classmanage.ClassManager;
 import com.featureselect.FeatureManager;
@@ -30,12 +32,23 @@ public class KNNClassifierCore {
 	private class Simulation {
 		int classID;
 		double simValue;
+		String docPosition;
 
 		public Simulation(int classID, double simValue) {
 			this.classID = classID;
 			this.simValue = simValue;
 		}
+		
+		public Simulation(int classID, double simValue, String docPosition) {
+			this.classID = classID;
+			this.simValue = simValue;
+			this.docPosition = docPosition;
+		}
 
+		public String getDocPosition() {
+			return docPosition;
+		}
+		
 		public int getClassID() {
 			return classID;
 		}
@@ -93,6 +106,21 @@ public class KNNClassifierCore {
 		int classID = classify(documentVector);
 		return classID;
 	}
+	
+	/**
+	 * 寻找最相似的文章
+	 * @param document
+	 * @return
+	 */
+	public void maxSimilarity(Document document) {
+		DocumentVector documentVector = new DocumentVector(featureVectorSpace,
+				document, classManager);
+		Simulation[] simulations = getSimilarity(documentVector);
+		
+		for (int i = 0; i < K; i++) {
+			System.out.println("最相似的文章是：" + classManager.getClassName(simulations[i].getClassID()) + ":" + simulations[i].getDocPosition());
+		}
+	}
 
 	public int classifyByID(String path) {
 		DocumentVector documentVector = new DocumentVector(featureVectorSpace,
@@ -110,18 +138,9 @@ public class KNNClassifierCore {
 	}
 
 	public int classify(DocumentVector documentVector) {
-		int count = 0;
+		Simulation[] simulations = getSimilarity(documentVector);
+		
 		int[] values = new int[classManager.getClassCount()];
-		Simulation[] simulations = new Simulation[trainingSetForKNN.size()];
-		Iterator<DocumentVector> iterator = trainingSetForKNN.iterator();
-		while (iterator.hasNext()) {
-			DocumentVector tempDocumentVector = iterator.next();
-			int classID = tempDocumentVector.getClassID();
-			double simValue = simulate(tempDocumentVector, documentVector);
-			simulations[count++] = new Simulation(classID, simValue);
-
-		}
-		sort(simulations);
 		
 		//TODO  dimension 需要自己重新搞一下
 //		int dimension = K * classManager.getClassCount() + 1;
@@ -132,6 +151,23 @@ public class KNNClassifierCore {
 		}
 		int classID = getMaxValueID(values);
 		return classID;
+	}
+
+
+	private Simulation[] getSimilarity(DocumentVector documentVector) {
+		int count = 0;
+		Simulation[] simulations = new Simulation[trainingSetForKNN.size()];
+		Iterator<DocumentVector> iterator = trainingSetForKNN.iterator();
+		while (iterator.hasNext()) {
+			DocumentVector tempDocumentVector = iterator.next();
+			int classID = tempDocumentVector.getClassID();
+			String pos = tempDocumentVector.getDocPosition();
+			double simValue = simulate(tempDocumentVector, documentVector);
+			simulations[count++] = new Simulation(classID, simValue, pos);
+
+		}
+		sort(simulations);
+		return simulations;
 	}
 
 	/**
