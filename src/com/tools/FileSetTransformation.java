@@ -137,10 +137,10 @@ public class FileSetTransformation {
 	 */
 	public static void main(String[] args) throws IOException {
 		FileSetTransformation transformation = new FileSetTransformation();
-		transformation.fileTransformation("d:/C11-Space0028.txt");
-//		System.out.println("transformating test files......");
-//		transformation.trainformation("D:\\temp\\fudan_subset_subset\\test", "D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
-//		System.out.println("transformating train files......");
-//		transformation.trainformation("D:\\temp\\fudan_subset_subset\\train", "D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
+//		transformation.fileTransformation("d:/C11-Space0028.txt");
+		System.out.println("transformating test files......");
+		transformation.trainformation("D:\\temp\\fudan_subset_subset_skewed\\test", "D:\\temp\\fudan_subset_subset_skewed\\testSetFiles.txt");
+		System.out.println("transformating train files......");
+		transformation.trainformation("D:\\temp\\fudan_subset_subset_skewed\\train", "D:\\temp\\fudan_subset_subset_skewed\\trainSetFiles.txt");
 	}
 }

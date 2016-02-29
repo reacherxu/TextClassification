@@ -452,7 +452,7 @@ public class ClassifyTest {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
+		/*FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
 		ClassifyTest test = new ClassifyTest();
 		//分类准备
 		String function = FeatureSelector.X2;
@@ -464,10 +464,10 @@ public class ClassifyTest {
 		Document tmpDoc = new Document();
 		test.docPrediction(tmpDoc);
 		test.similarDocs(tmpDoc);
-		
+		*/
 		//读入文档集
-	/*	FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
-		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
+		FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset_skewed\\trainSetFiles.txt");
+		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset_skewed\\testSetFiles.txt");
 		ClassifyTest test = new ClassifyTest();
 		//分类准备
 		test.prepare(trainSet);
@@ -503,7 +503,7 @@ public class ClassifyTest {
 				System.out.println();
 			}
 		}
-		scanner.close();*/
+		scanner.close();
 	}
 
 	/**
@@ -524,7 +524,6 @@ public class ClassifyTest {
 		
 	}
 
-	@SuppressWarnings("unused")
 	private void svm_predict(String function, int dimension, FileSet testSet,
 			String result_path) throws IOException {
 		String train_path = "D:/fudan/train.txt";

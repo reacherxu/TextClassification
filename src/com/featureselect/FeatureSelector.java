@@ -101,10 +101,13 @@ public class FeatureSelector {
 					if (!hasFeature(feature))
 						addFeature(feature);
 					increaseFeatureCount(feature, classID);
+					increaseFeatureWordFreq(feature, document.get(feature), classID);
 				}
 			}
 		}
 	}
+
+	
 
 	private void doStatistic(String rootPath) {
 		String[] classNames = classManager.getClassNames();
@@ -260,6 +263,23 @@ public class FeatureSelector {
 	// featureManager.removeFeature(feature);
 	// }
 
+	/**
+	 * 对应类的词频统计
+	 * @param feature
+	 * @param integer
+	 * @param classID
+	 */
+	private void increaseFeatureWordFreq(String feature, Integer freq,
+			int classID) {
+		featureManager.increaseFeatureWordFreq(feature, freq, classID);
+		
+	}
+	
+	/**
+	 * 对应类的文档词频
+	 * @param feature
+	 * @param classID
+	 */
 	private void increaseFeatureCount(String feature, int classID) {
 		featureManager.increaseFeatureCount(feature, classID);
 	}
@@ -268,6 +288,10 @@ public class FeatureSelector {
 		return featureManager.hasFeature(feature);
 	}
 
+	public int getFeatureWordFreq(String feature, int classID) {
+		return featureManager.getFeatureWordFreq(feature, classID);
+	}
+	
 	public int getFeatureCount() {
 		return featureManager.getFeatureCount();
 	}
@@ -284,7 +308,9 @@ public class FeatureSelector {
 		return featureManager.getClassFileCountOfFeature(classID, feature);
 	}
 
-	
+	public int getClassCountOfFeature(String feature) {
+		return featureManager.getClassCountOfFeature(feature);
+	}
 
 	/**
 	 * @param args

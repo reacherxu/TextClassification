@@ -37,15 +37,25 @@ public class FeatureManager {
 		featureMap.remove(feature);
 	}
 
+	public void increaseFeatureWordFreq(String feature, int freq, int classID) {
+		Feature tempFeature = featureMap.get(feature);
+		tempFeature.increaseWordFreq(freq, classID);
+	}
+	
 	public void increaseFeatureCount(String feature, int classID) {
 		Feature tempFeature = featureMap.get(feature);
 		tempFeature.increaseFileCount(feature, classID);
 	}
-
+	
 	public boolean hasFeature(String feature) {
 		return featureMap.containsKey(feature);
 	}
 
+	public int getFeatureWordFreq(String feature, int classID) {
+		Feature tempFeature = featureMap.get(feature);
+		return tempFeature.getClassWordFreq(classID);
+	}
+	
 	public int getFeatureCount() {
 		return featureMap.size();
 	}
@@ -71,6 +81,11 @@ public class FeatureManager {
 		return tempFeature.getClassFileCount(classID);
 	}
 
+	public int getClassCountOfFeature(String feature) {
+		Feature tempFeature = featureMap.get(feature);
+		return tempFeature.getClassCount();
+	}
+	
 	public FeatureVectorSpace getFeatureVectorSpace() {
 		Set<String> keySet = featureMap.keySet();
 		Vector<String> featureVector = new Vector<String>(keySet);

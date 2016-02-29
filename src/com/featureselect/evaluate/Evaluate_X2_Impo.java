@@ -31,6 +31,7 @@ public class Evaluate_X2_Impo implements Evaluate {
 			double count_d = totalFileCount - totalFileCountOfFeature - count_c;
 			double part2 = 0;
 			
+			double FI = featureItemManager.getFeatureWordFreq(feature, classID) / count1;
 			double CI = count_a / totalFileCountOfFeature;
 			double DI = count_a / count1;
 			if(count_a * count_d - count_b * count_c > 0)
@@ -38,7 +39,7 @@ public class Evaluate_X2_Impo implements Evaluate {
 						(count_a * count_d - count_b * count_c), 2))
 						/ ((count_a + count_b) * (count_a + count_c)
 								* (count_b + count_d) * (count_c + count_d));
-			result += part1 * part2 * CI * DI;
+			result += part1 * part2 * FI * CI * DI;
 		}
 //		System.out.println(result);
 		return result;

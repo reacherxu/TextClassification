@@ -18,6 +18,8 @@ public class Evaluate_IDTC implements Evaluate {
 		double result = 0;
 		double totalFileCountOfFeature = featureItemManager
 				.getTotalFileCountOfFeature(feature);
+		
+		
 		if (totalFileCountOfFeature > classNames.length) {
 			for (int i = 0; i < classNames.length - 1; i++)
 				for (int j = i + 1; j < classNames.length; j++) {
@@ -46,6 +48,6 @@ public class Evaluate_IDTC implements Evaluate {
 					}
 				}
 		}
-		return result;
+		return result ;
 	}
 }
