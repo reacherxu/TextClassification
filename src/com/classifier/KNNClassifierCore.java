@@ -1,8 +1,6 @@
 package com.classifier;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import com.classmanage.ClassManager;
 import com.featureselect.FeatureManager;
@@ -23,7 +21,7 @@ public class KNNClassifierCore {
 	private FeatureVectorSpace featureVectorSpace;
 	private TrainingSetForKNN trainingSetForKNN;
 	
-	private final int K = 5;
+	private int K = 5;
 
 	public TrainingSetForKNN getTrainingSetForKNN() {
 		return trainingSetForKNN;
@@ -34,11 +32,6 @@ public class KNNClassifierCore {
 		double simValue;
 		String docPosition;
 
-		public Simulation(int classID, double simValue) {
-			this.classID = classID;
-			this.simValue = simValue;
-		}
-		
 		public Simulation(int classID, double simValue, String docPosition) {
 			this.classID = classID;
 			this.simValue = simValue;
@@ -86,6 +79,16 @@ public class KNNClassifierCore {
 		featureSelector = FeatureSelector.getInstance(trainSet, classManager);
 	}
 
+	/* 根据参数进行特征选择 */
+	public void refresh(String function, int dimension, int K) {
+		FeatureManager featureManager = featureSelector.doFeatureSelect(
+				function, dimension);
+		featureVectorSpace = featureManager.getFeatureVectorSpace();
+		trainingSetForKNN = new TrainingSetForKNN(trainSet, featureVectorSpace,
+				classManager);
+		this.K = K;
+	}
+	
 	/* 根据参数进行特征选择 */
 	public void refresh(String function, int dimension) {
 		FeatureManager featureManager = featureSelector.doFeatureSelect(

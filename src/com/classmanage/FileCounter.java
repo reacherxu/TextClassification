@@ -1,5 +1,6 @@
 package com.classmanage;
 
+
 /**
  * 文件计数器，统计总体及各个类别的文档个数
  * @author Administrator
@@ -12,6 +13,11 @@ public class FileCounter {
 	 */
 	private int[] classFileCount;
 	/**
+	 * 对应类别的文档 保存在内存中
+	 */
+//	private List<ArrayList<Document>> classFiles;
+	
+	/**
 	 * fileset中的文件数
 	 * 与fileset中的total对应
 	 */
@@ -20,8 +26,24 @@ public class FileCounter {
 	public FileCounter(int classCount) {
 		classFileCount = new int[classCount];
 		totalFileCount = 0;
+//		initClassFiles(classCount);
 	}
 
+	/*private void initClassFiles(int classCount) {
+		classFiles = new ArrayList<ArrayList<Document>>();
+		for (int i = 0; i < classCount; i++) {
+			classFiles.add(new ArrayList<Document>());
+		}
+	}
+
+	public void setClassFile(Document document, int classID) {
+		classFiles.get(classID).add(document);
+	}
+	
+	public List<Document> getClassFile(int classID) {
+		return classFiles.get(classID);
+	}*/
+	
 	/**
 	 * 获得某个类别的文档个数
 	 * @param classID

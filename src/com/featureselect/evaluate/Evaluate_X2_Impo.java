@@ -3,7 +3,7 @@ package com.featureselect.evaluate;
 import com.classmanage.ClassManager;
 import com.featureselect.FeatureSelector;
 /**
- * 特征选择方法CHI的实现类
+ * 特征选择方法CHI 改进后的实现类
  * @author Administrator
  *
  */
@@ -15,6 +15,9 @@ public class Evaluate_X2_Impo implements Evaluate {
 		double totalFileCount = classManager.getTotalFileCount();
 	    double totalFileCountOfFeature = featureItemManager
 				.getTotalFileCountOfFeature(feature);
+	    
+	    if(totalFileCountOfFeature <= 1)
+	    	return 0;
 	    
 		String[] classNames = classManager.getClassNames();
 		double result = 0;
@@ -31,15 +34,17 @@ public class Evaluate_X2_Impo implements Evaluate {
 			double count_d = totalFileCount - totalFileCountOfFeature - count_c;
 			double part2 = 0;
 			
-			double FI = featureItemManager.getFeatureWordFreq(feature, classID) / count1;
+			double FI = Math.log(1 + featureItemManager.getFeatureWordFreq(feature, classID) / count1);
 			double CI = count_a / totalFileCountOfFeature;
 			double DI = count_a / count1;
+			double IDF = Math.log(totalFileCount / totalFileCountOfFeature);
+			
 			if(count_a * count_d - count_b * count_c > 0)
 				part2 = (totalFileCount * Math.pow(
 						(count_a * count_d - count_b * count_c), 2))
 						/ ((count_a + count_b) * (count_a + count_c)
 								* (count_b + count_d) * (count_c + count_d));
-			result += part1 * part2 * FI * CI * DI;
+			result += part1 * part2 * FI * CI * DI * IDF;
 		}
 //		System.out.println(result);
 		return result;

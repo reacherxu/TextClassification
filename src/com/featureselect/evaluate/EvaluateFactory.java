@@ -39,6 +39,12 @@ public class EvaluateFactory {
 		else if(name.equals("IMPROVE")){
 			return new Evaluate_IDTC();
 		}
+		else if(name.equals("Combined")){
+			return new Evaluate_SCR();
+		}
+		else if(name.equals("SCR")){
+			return new Evaluate_SCR();
+		}
 		else{
 			System.out.println("name not found");
 			return null;

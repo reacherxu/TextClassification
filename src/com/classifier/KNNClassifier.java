@@ -25,17 +25,24 @@ public class KNNClassifier {
 		isTrained = false;
 	}
 
-	public KNNClassifier(String function, int lemon) {
+	public KNNClassifier(String function, int dimension) {
 		this.function = function;
-		this.dimension = lemon;
+		this.dimension = dimension;
 		isTrained = false;
 	}
 
-	public void changeSetting(String function, int lemon) {
+	public void changeSetting(String function, int dimension) {
 		this.function = function;
-		this.dimension = lemon;
+		this.dimension = dimension;
 		if (isTrained)
-			core.refresh(function, lemon);
+			core.refresh(function, dimension);
+	}
+	
+	public void changeSetting(String function, int dimension, int K) {
+		this.function = function;
+		this.dimension = dimension;
+		if (isTrained)
+			core.refresh(function, dimension, K);
 	}
 
 	public void prepare(String root) {

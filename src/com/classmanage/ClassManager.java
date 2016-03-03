@@ -31,6 +31,8 @@ public class ClassManager {
 			classVector.add(classNameStrings[i]);
 			fileCounter.setClassFileCount(i,
 					trainSet.getCount(classNameStrings[i]));
+			
+//			fileCounter.setClassFile(document, i);
 		}
 	}
 

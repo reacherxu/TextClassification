@@ -153,7 +153,25 @@ public class ClassifyTest {
 	
 
 	/**
-	 * 测试在特定特征选择方法下的分类模型的分类效率 
+	 * 测试在特定特征选择方法下的分类模型的分类效率
+	 * @param fileSet
+	 * @param function
+	 * @param dimension
+	 * @param K
+	 */
+	public void test(FileSet fileSet, String function, int dimension, int K) {
+		classifier.changeSetting(function, dimension, K);
+		classManager = classifier.getClassManager();
+		int count = classManager.getClassCount();
+		testFileCount = new int[count];
+		classifyResult = new int[count][count];
+		recalls = new double[count];
+		precisions = new double[count];
+		test(fileSet);
+	}
+	
+	/**
+	 * 测试在特定特征选择方法下的分类模型的分类效率
 	 * @param fileSet
 	 * @param function
 	 * @param dimension
@@ -466,8 +484,8 @@ public class ClassifyTest {
 		test.similarDocs(tmpDoc);
 		*/
 		//读入文档集
-		FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset_skewed\\trainSetFiles.txt");
-		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset_skewed\\testSetFiles.txt");
+		FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
+		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
 		ClassifyTest test = new ClassifyTest();
 		//分类准备
 		test.prepare(trainSet);
@@ -483,27 +501,30 @@ public class ClassifyTest {
 //		test.outputResult(outputPath);
 		
 		//读入参数列表
-		Scanner scanner = new Scanner(new File("file/parameters_test"));
-		while (scanner.hasNext()) {
-			String line = scanner.nextLine();
-			if (!line.trim().equals("")) {
-				String[] parameters = line.split(" ");
-				String function = parameters[0];
-				int dimension = Integer.parseInt(parameters[1]);
-				
-//				String result_path = "D:/fudan/result.txt";
-//				test.svm_predict(function, dimension, testSet, result_path);
-//				test.test(testSet, result_path);
-				
-				test.test(testSet, function, dimension);
-				String outputPath = "result_1/" + function + "_" + dimension + ".txt";
-				test.outputResult(outputPath);
-				System.out.println();
-				System.out.println("********************************************");
-				System.out.println();
+		for (int k = 1; k <= 10; k++) {
+			Scanner scanner = new Scanner(new File("file/parameters_test"));
+			while (scanner.hasNext()) {
+				String line = scanner.nextLine();
+				if (!line.trim().equals("")) {
+					String[] parameters = line.split(" ");
+					String function = parameters[0];
+					int dimension = Integer.parseInt(parameters[1]);
+					
+//					String result_path = "D:/fudan/result.txt";
+//					test.svm_predict(function, dimension, testSet, result_path);
+//					test.test(testSet, result_path);
+					
+					test.test(testSet, function, dimension, k);
+					String outputPath = "result/K/" + k + "_" + function + "_" + dimension + ".txt";
+					test.outputResult(outputPath);
+					System.out.println();
+					System.out.println("********************************************");
+					System.out.println();
+				}
 			}
+			scanner.close();
 		}
-		scanner.close();
+		
 	}
 
 	/**
