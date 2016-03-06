@@ -501,29 +501,34 @@ public class ClassifyTest {
 //		test.outputResult(outputPath);
 		
 		//读入参数列表
-		for (int k = 1; k <= 10; k++) {
-			Scanner scanner = new Scanner(new File("file/parameters_test"));
-			while (scanner.hasNext()) {
-				String line = scanner.nextLine();
-				if (!line.trim().equals("")) {
-					String[] parameters = line.split(" ");
-					String function = parameters[0];
-					int dimension = Integer.parseInt(parameters[1]);
-					
-//					String result_path = "D:/fudan/result.txt";
-//					test.svm_predict(function, dimension, testSet, result_path);
-//					test.test(testSet, result_path);
-					
-					test.test(testSet, function, dimension, k);
-					String outputPath = "result/K/" + k + "_" + function + "_" + dimension + ".txt";
-					test.outputResult(outputPath);
-					System.out.println();
-					System.out.println("********************************************");
-					System.out.println();
-				}
+		Scanner scanner = new Scanner(new File("file/parameters_test"));
+		while (scanner.hasNext()) {
+			long start = System.currentTimeMillis();
+			
+			String line = scanner.nextLine();
+			if (!line.trim().equals("")) {
+				String[] parameters = line.split(" ");
+				String function = parameters[0];
+				int dimension = Integer.parseInt(parameters[1]);
+
+				//					String result_path = "D:/fudan/result.txt";
+				//					test.svm_predict(function, dimension, testSet, result_path);
+				//					test.test(testSet, result_path);
+
+				test.test(testSet, function, dimension);
+				String outputPath = "result/result_1/"  + "_" + function + "_" + dimension + ".txt";
+				test.outputResult(outputPath);
+				System.out.println();
+				System.out.println("********************************************");
+				System.out.println();
+				
+				long end = System.currentTimeMillis();
+				Log.log(function + "_" + dimension + " take " + (end-start) + "毫秒");
 			}
-			scanner.close();
+			
+			
 		}
+		scanner.close();
 		
 	}
 
