@@ -42,7 +42,10 @@ public class FileSet extends ArrayList<Document> {
 	}
 
 	public int getCount(String className) {
-		return map.get(className);
+		if(map.containsKey(className))
+			return map.get(className);
+		else
+			return 0;
 	}
 
 	/**

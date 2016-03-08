@@ -26,7 +26,7 @@ public class Demo {
         try {
             resultString = instance.NLPIR_ParagraphProcess(sInput, 1);
             System.out.println("分词结果为：\n " + resultString);
-            
+            instance.NLPIR_FileProcess("d:\\document_test.txt", "d:\\document_test_ws.txt", 0);
             
             //文件分词的输入和输出
 //            String utf8File = "test/18届三中全会.TXT";

@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class FileSetTransformation {
 
 	public void trainformation(String root, String savePath) throws IOException {
-		root = pathNormalize(root);
+		root = FilePathHandler.pathNormalize(root);
 		File saveFile = new File(savePath);
 		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(
 				saveFile)));
@@ -125,11 +125,6 @@ public class FileSetTransformation {
 		writer.println();
 	}
 
-	public String pathNormalize(String path) {
-		if (!path.endsWith("/"))
-			path = path + "/";
-		return path;
-	}
 
 	/**
 	 * @param args
@@ -138,9 +133,12 @@ public class FileSetTransformation {
 	public static void main(String[] args) throws IOException {
 		FileSetTransformation transformation = new FileSetTransformation();
 //		transformation.fileTransformation("d:/C11-Space0028.txt");
-		System.out.println("transformating test files......");
-		transformation.trainformation("D:\\temp\\fudan_subset_subset_skewed\\test", "D:\\temp\\fudan_subset_subset_skewed\\testSetFiles.txt");
-		System.out.println("transformating train files......");
-		transformation.trainformation("D:\\temp\\fudan_subset_subset_skewed\\train", "D:\\temp\\fudan_subset_subset_skewed\\trainSetFiles.txt");
+		Log.log("test files transformation started......");
+		transformation.trainformation("D:\\temp\\corpus_mini\\test", "D:\\temp\\corpus_mini\\testSetFiles.txt");
+		Log.log("test files transformation ended......");
+		
+		Log.log("train files files transformation started......");
+		transformation.trainformation("D:\\temp\\corpus_mini\\train", "D:\\temp\\corpus_mini\\trainSetFiles.txt");
+		Log.log("train files transformation ended......");
 	}
 }

@@ -17,6 +17,7 @@ import com.svm.svm_predict;
 import com.svm.svm_scale;
 import com.svm.svm_train;
 import com.tools.FileSetTransformation;
+import com.tools.FormatDecimal;
 import com.tools.Log;
 
 /**
@@ -283,21 +284,21 @@ public class ClassifyTest {
 
 			writer.print("recall:\t\t");
 			for (int i = 0; i < length; i++) {
-				writer.print(getClassRecall(i) + "\t\t");
+				writer.print(FormatDecimal.format(getClassRecall(i)) + "\t\t");
 			}
 			writer.println();
 			writer.println();
 
 			writer.print("pricise:\t\t");
 			for (int i = 0; i < length; i++) {
-				writer.print(getClassPrecision(i) + "\t\t");
+				writer.print(FormatDecimal.format(getClassPrecision(i)) + "\t\t");
 			}
 			writer.println();
 			writer.println();
 
 			writer.print("F1:\t\t");
 			for (int i = 0; i < length; i++) {
-				writer.print(getClassF1(i) + "\t\t");
+				writer.print(FormatDecimal.format(getClassF1(i)) + "\t\t");
 			}
 			writer.println();
 
@@ -511,12 +512,12 @@ public class ClassifyTest {
 				String function = parameters[0];
 				int dimension = Integer.parseInt(parameters[1]);
 
-				//					String result_path = "D:/fudan/result.txt";
-				//					test.svm_predict(function, dimension, testSet, result_path);
-				//					test.test(testSet, result_path);
+//				String result_path = "D:/fudan/result.txt";
+//				test.svm_predict(function, dimension, testSet, result_path);
+//				test.test(testSet, result_path);
 
 				test.test(testSet, function, dimension);
-				String outputPath = "result/result_1/"  + "_" + function + "_" + dimension + ".txt";
+				String outputPath = "result/svm_result/" + function + "_" + dimension + ".txt";
 				test.outputResult(outputPath);
 				System.out.println();
 				System.out.println("********************************************");
