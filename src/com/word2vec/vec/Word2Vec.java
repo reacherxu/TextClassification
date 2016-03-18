@@ -44,12 +44,12 @@ public class Word2Vec {
     private double sample;
 //    private int negativeSample;
     private double alpha;       // 学习率，并行时由线程更新
-    private double alphaThresold;
+    double alphaThresold;
     private double initialAlpha;  // 初始学习率
     private int freqThresold = 5;
     private final byte[] alphaLock = new byte[0];  // alpha同步锁
-    private final byte[] treeLock = new byte[0];  // alpha同步锁
-    private final byte[] vecLock = new byte[0];  // alpha同步锁
+    final byte[] treeLock = new byte[0];  // alpha同步锁
+    final byte[] vecLock = new byte[0];  // alpha同步锁
 
     private double[] expTable;
     private static final int EXP_TABLE_SIZE = 1000;
@@ -69,7 +69,7 @@ public class Word2Vec {
 
     public static class Factory {
 
-        private int vectorSize = 200;
+        private int vectorSize = 100;
         private int windowSize = 5;
         private int freqThresold = 5;
 
@@ -223,7 +223,8 @@ public class Word2Vec {
 
     }
 
-    public void training(){
+    @SuppressWarnings("rawtypes")
+	public void training(){
 
         if (tempCorpus == null){
             throw new NullPointerException("训练语料为空，如果之前调用了training()，" +

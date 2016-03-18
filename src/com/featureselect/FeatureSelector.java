@@ -37,8 +37,6 @@ public class FeatureSelector {
 	private StopWordHandler stopWordHandler;
 	private ClassManager classManager;
 	private ChineseSplitter splitter;
-	private int count = 0;
-	
 	/**
 	 * 单例模式
 	 * @param path
@@ -175,8 +173,6 @@ public class FeatureSelector {
 			markedFeature.setMark(mark);
 			markedFeatures[i] = markedFeature;
 		}
-		// System.out.println(getFeatureCount());
-		count = 0;
 		bubble_sort(markedFeatures);
 		FeatureManager result = select(markedFeatures, dimension);
 		return result;
@@ -202,6 +198,7 @@ public class FeatureSelector {
 	 * 排序处理
 	 * @param features
 	 */
+	@SuppressWarnings("unused")
 	private void sort(MarkedFeature[] features) {
 		quickSort(features, 0, features.length - 1);
 	}

@@ -12,11 +12,12 @@ import com.tools.Log;
  */
 public class KNNClassifier {
 
-	private String function = FeatureSelector.DF;
-	private int dimension = 500;
+	String function = FeatureSelector.DF;
+	int dimension = 500;
 	private boolean isTrained;
 	private KNNClassifierCore core;
 
+	
 	public KNNClassifierCore getCore() {
 		return core;
 	}

@@ -14,7 +14,7 @@ import com.featureselect.FeatureVectorSpace;
  * 
  */
 public class KNNClassifierCore {
-	private String rootPath;
+	String rootPath;
 	private FileSet trainSet;
 	private ClassManager classManager;
 	private FeatureSelector featureSelector;
@@ -145,7 +145,6 @@ public class KNNClassifierCore {
 		
 		int[] values = new int[classManager.getClassCount()];
 		
-		//TODO  dimension 需要自己重新搞一下
 //		int dimension = K * classManager.getClassCount() + 1;
 		int dimension = K ;
 		for (int i = 0; i < dimension; i++) {
@@ -181,8 +180,8 @@ public class KNNClassifierCore {
 	 */
 	private double simulate(DocumentVector first, DocumentVector second) {
 		double part1 = 0, part2 = 0, part3 = 0;
-		double[] firstVector = first.getFeatureCount();
-		double[] secondVector = second.getFeatureCount();
+		double[] firstVector = first.getTFIDF();
+		double[] secondVector = second.getTFIDF();
 		for (int i = 0; i < firstVector.length; i++) {
 			part1 += firstVector[i] * secondVector[i];
 			part2 += firstVector[i] * firstVector[i];

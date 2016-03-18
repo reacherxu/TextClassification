@@ -6,7 +6,7 @@ import java.util.*;
 public class VectorModel {
 
     private Map<String, float[]> wordMap = new HashMap<String, float[]>();
-    private int vectorSize = 200; //特征数
+    private int vectorSize = 100; //特征数
 
     private int topNSize = 40;
 

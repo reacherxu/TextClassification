@@ -21,7 +21,7 @@ public class Evaluate_Combined implements Evaluate {
 				.getTotalFileCountOfFeature(feature);
 		double totalFileCount = classManager.getTotalFileCount();
 		
-		double lambda = 0.85;		
+		double lambda = 0.95;		
 		//improved X2
 		for (int i = 0; i < classNames.length; i++) {
 			int classID = classManager.getClassID(classNames[i]);

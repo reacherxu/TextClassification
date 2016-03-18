@@ -66,6 +66,10 @@ public class TrainingSetForKNN extends ArrayList<DocumentVector> {
 		this.classManager = classManager;
 		for (int i = 0; i < trainSet.size(); i++) {
 			Document document = trainSet.get(i);
+			
+			if(i % 100 == 0 && i!=0 )
+				System.out.print(i + ",");
+				
 			DocumentVector fileVector = new DocumentVector(featureVectorSpace,
 					document, classManager);
 			add(fileVector);

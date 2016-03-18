@@ -124,7 +124,68 @@ public class FileSetTransformation {
 		}
 		writer.println();
 	}
+//-------------------------------------------------------------
+	
+	public void trainformation(String root) throws IOException {
+		Log.log("Lda file process started....");
+		
+		root = FilePathHandler.pathNormalize(root);
+		
+		//记录每类下文件数量
+		File rootDir = new File(root);
+		String fileNames[] = rootDir.list();
+		
+		for (int i = 0; i < fileNames.length; i++) {
+			String classPath = root + fileNames[i] + "/";
 
+			/* 处理每类下的文件 */
+			File classFile = new File(classPath);
+			String[] filelist = classFile.list();  
+			
+			for (int j = 0; j < filelist.length; j++) {
+				String filePath = classPath + filelist[j];
+				
+				LdaFile(filePath, filelist[j]);
+			}
+		}
+		
+		Log.log("Lda file process ended....");
+	}
+
+	private void LdaFile(String filePath, String fileName) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter("d:/lda/ldaFileTest/"+fileName));
+		
+		String content = DocumentReader.readFile(filePath);
+		ChineseSplitter splitter = ChineseSplitter.getInstance();
+		String[] words = splitter.split(content);
+		
+		for (int i = 0; i < words.length; i++) {
+			
+			String word = filter(words[i].trim());
+			if( null != word)
+				writer.write(word + " ");
+		}
+		
+		writer.flush();
+		writer.close();
+
+	}
+	
+	private String filter(String str) {
+		String wt[] = str.split("/");
+		if( wt.length < 2) 
+			return null;
+		
+		String item = wt[0];
+		String ext = wt[1];
+		
+		//TODO　看看其他词性有没有影响
+		if ( (ext.startsWith("n")&& !ext.startsWith("nr")) || ext.startsWith("un")
+				|| ext.startsWith("v") || ext.startsWith("a")) {
+			return item;
+		}
+		return null;
+	}
 
 	/**
 	 * @param args
@@ -132,13 +193,15 @@ public class FileSetTransformation {
 	 */
 	public static void main(String[] args) throws IOException {
 		FileSetTransformation transformation = new FileSetTransformation();
+		
+		transformation.trainformation("D:\\temp\\fudan_subset_subset\\test\\");
 //		transformation.fileTransformation("d:/C11-Space0028.txt");
-		Log.log("test files transformation started......");
+	/*	Log.log("test files transformation started......");
 		transformation.trainformation("D:\\temp\\corpus_mini\\test", "D:\\temp\\corpus_mini\\testSetFiles.txt");
 		Log.log("test files transformation ended......");
 		
 		Log.log("train files files transformation started......");
 		transformation.trainformation("D:\\temp\\corpus_mini\\train", "D:\\temp\\corpus_mini\\trainSetFiles.txt");
-		Log.log("train files transformation ended......");
+		Log.log("train files transformation ended......");*/
 	}
 }

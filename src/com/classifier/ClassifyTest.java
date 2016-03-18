@@ -12,11 +12,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.classmanage.ClassManager;
-import com.featureselect.FeatureSelector;
 import com.svm.svm_predict;
 import com.svm.svm_scale;
 import com.svm.svm_train;
-import com.tools.FileSetTransformation;
 import com.tools.FormatDecimal;
 import com.tools.Log;
 
@@ -54,6 +52,7 @@ public class ClassifyTest {
 		classifier = new KNNClassifier(function, dimension);
 	}
 
+	
 	public void svm_train_dateset(String function, int dimension,String path) {
 		classifier.changeSetting(function, dimension);
 		TrainingSetForKNN set = classifier.getCore().getTrainingSetForKNN();
@@ -70,6 +69,7 @@ public class ClassifyTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Log.log("svm_train_dateset generated....");
 		
 	}
 	
@@ -89,6 +89,7 @@ public class ClassifyTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Log.log("svm_test_dateset generated....");
 	}
 		
 	/**
@@ -130,7 +131,6 @@ public class ClassifyTest {
 		Log.log("begin testing!");
 		String[] classnameStrings = classManager.getClassNames();
 		
-		//TODO testset 必须要有和trainset一样的结构
 		for (int i = 0; i < classnameStrings.length; i++) {
 			int classID = classManager.getClassID(classnameStrings[i]);
 			testFileCount[classID] = testSet.getCount(classnameStrings[i]);
@@ -199,7 +199,6 @@ public class ClassifyTest {
 		
 		String[] classnameStrings = classManager.getClassNames();
 		
-		//TODO testset 必须要有和trainset一样的结构
 		for (int i = 0; i < classnameStrings.length; i++) {
 			int classID = classManager.getClassID(classnameStrings[i]);
 			testFileCount[classID] = testSet.getCount(classnameStrings[i]);
@@ -512,19 +511,20 @@ public class ClassifyTest {
 				String function = parameters[0];
 				int dimension = Integer.parseInt(parameters[1]);
 
-//				String result_path = "D:/fudan/result.txt";
-//				test.svm_predict(function, dimension, testSet, result_path);
-//				test.test(testSet, result_path);
+				String result_path = "D:/fudan/result.txt";
+				test.svm_predict(function, dimension, testSet, result_path);
+				test.test(testSet, result_path);
 
-				test.test(testSet, function, dimension);
-				String outputPath = "result/svm_result/" + function + "_" + dimension + ".txt";
+//				test.test(testSet, function, dimension);
+				String outputPath = "result/lda/" + function + "_" + dimension + ".txt";
 				test.outputResult(outputPath);
+				
+				long end = System.currentTimeMillis();
+				Log.log(function + "_" + dimension + " take " + (end-start) + "毫秒");
 				System.out.println();
 				System.out.println("********************************************");
 				System.out.println();
 				
-				long end = System.currentTimeMillis();
-				Log.log(function + "_" + dimension + " take " + (end-start) + "毫秒");
 			}
 			
 			
@@ -537,6 +537,7 @@ public class ClassifyTest {
 	 * 寻找最相似的文档
 	 * @param tmpDoc
 	 */
+	@SuppressWarnings("unused")
 	private void similarDocs(Document tmpDoc) {
 		classifier.maxSimilarity(tmpDoc);
 	}
@@ -545,6 +546,7 @@ public class ClassifyTest {
 	 * 为单篇文档预测
 	 * @param tmpDoc
 	 */
+	@SuppressWarnings("unused")
 	private void docPrediction(Document tmpDoc) {
 		int classifyID = classifier.classifyByID(tmpDoc);
 		System.out.println("预测为：" + classManager.getClassName(classifyID));

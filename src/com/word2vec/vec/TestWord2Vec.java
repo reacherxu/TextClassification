@@ -46,9 +46,10 @@ public class TestWord2Vec {
         }
     }
     
-    public static void getVector(String modelFilePath) {
-    	VectorModel vm = VectorModel.loadFromFile(modelFilePath);
-    	float[] vec = vm.getWordVector("²ÄÁÏ");
+    public static void getVector(String word) {
+    	VectorModel vm = VectorModel.loadFromFile("D:/temp/w2v_corpus_100.nn");
+    	float[]  vec = vm.getWordVector(word);
+    	System.out.println("vec.length:" + vec.length);
     	for (int i = 0; i < vec.length; i++) {
 			System.out.print(vec[i] + "\t");
 		}
@@ -61,11 +62,11 @@ public class TestWord2Vec {
 
     public static void main(String[] args){
 
-//        String textFilePath = "D:\\temp\\fudan_subset_subset\\file.w2v";
-        String modelFilePath = "D:/temp/w2v_corpus.nn";
-//        readByJava(textFilePath, modelFilePath);
-        dist(modelFilePath);
-//        getVector(modelFilePath);
+        String textFilePath = "D:\\temp\\fudan_subset_subset\\file.w2v";
+        String modelFilePath = "D:/temp/w2v_corpus_100.nn";
+        readByJava(textFilePath, modelFilePath);
+//        dist(modelFilePath);
+        getVector("²ÄÁÏ");
 //        testVector("²ÄÁÏ", modelFilePath);
     }
 

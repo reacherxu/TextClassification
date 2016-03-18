@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 
 import ICTCLAS.I3S.AC.CLibrary;
 
@@ -33,23 +32,13 @@ public class ChineseSplitter {
 	}
 
 	/**
-	 * 返回分词结果
+	 * 返回带有词性的分词结果
 	 * @param source
 	 * @return
 	 */
 	public String[] split(String source) {
-		try {
-			String resultString = ictclas30.NLPIR_ParagraphProcess(source, 1);
-			//	            System.out.println("分词结果为：\n " + resultString);
 
-			String[] allWords = resultString.split("\\s");
-			return allWords;
-		} catch (Exception e) {
-			System.out.println("错误信息：");
-			e.printStackTrace();
-		}
-
-		return null;
+		return split(source,1);
 	}
 	
 	public String[] split(String source, int pos) {
@@ -134,17 +123,17 @@ public class ChineseSplitter {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/*ChineseSplitter splitter = ChineseSplitter.getInstance();
+		ChineseSplitter splitter = ChineseSplitter.getInstance();
 		String sInput = "哎~那个金刚圈尺寸太差，前重后轻，左宽右窄，他戴上去很不舒服，"
 				+ "整晚失眠会连累我嘛，他虽然是只猴子，但你也不能这样对他啊，官府知道会说我虐待动物的，"
 				+ "说起那个金刚圈，啊~去年我在陈家村认识了一个铁匠，他手工精美，价钱又公道，童叟无欺，"
 				+ "干脆我介绍你再定做一个吧！";
-		String[] words = splitter.split(sInput, 0);
+		String[] words = splitter.split(sInput);
 		for (int i = 0; i < words.length; i++)
 			System.out.print(words[i] + " ");
-		splitter.close();*/
+		splitter.close();
 		
-		ChineseSplitter splitter = ChineseSplitter.getInstance();
+	/*	ChineseSplitter splitter = ChineseSplitter.getInstance();
 		try {
 			Log.log("w2v file transformation started.....");
 			splitter.trainformation("D:\\temp\\fudan_subset_subset\\train", "D:\\temp\\fudan_subset_subset\\file.w2v");
@@ -152,6 +141,6 @@ public class ChineseSplitter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		splitter.close();
+		splitter.close();*/
 	}
 }

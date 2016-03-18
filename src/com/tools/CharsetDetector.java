@@ -12,6 +12,7 @@ public class CharsetDetector {
 	 * ¼ì²âÎÄµµ±àÂë
 	 * @param path
 	 */
+	@SuppressWarnings("deprecation")
 	public static void detect(String path) {
 		cpdetector.io.CodepageDetectorProxy detector = cpdetector.io.CodepageDetectorProxy
 				.getInstance();
