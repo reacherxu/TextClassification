@@ -25,7 +25,7 @@ public class DocumentVector {
 	double[] tf;
 	double[] tf_idf;
 	private String docPosition;
-	final int dimension = 10;
+	final int dimension = 100;
 	double[] wordVec = new double[dimension];
 	/**
 	 * word2vec   
@@ -44,8 +44,8 @@ public class DocumentVector {
 	/**
 	 * lda model
 	 */
-	String ldaCorpusPath = "D:/lda/corpus_10.lda";
-	String ldaGibbsPath = "D:/lda/gibbs_10.lda";
+	String ldaCorpusPath = "D:/lda/corpus_" + dimension + ".lda";
+	String ldaGibbsPath = "D:/lda/gibbs_" + dimension + ".lda";
 	
 	public DocumentVector(FeatureVectorSpace featureVectorSpace, int classID,
 			String path) {

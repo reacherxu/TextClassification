@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.classmanage.ClassManager;
+
 /**
  * @author hankcs
  */
@@ -94,10 +96,11 @@ public class LdaUtil
         }
     }
     
-    public static void doc_explain(double[] tp, String fileName, BufferedWriter writer)
+    public static void doc_explain(double[] tp, String fileName, 
+    		BufferedWriter writer, ClassManager classManager)
     {
     	try {
-    		writer.write(getLabel(fileName) + " ");
+    		writer.write(getLabel(fileName,classManager) + " ");
     		for (int j = 0; j < tp.length; j++) {
     			writer.write( (j+1) + ":" + tp[j] + " ");
 			}
@@ -108,6 +111,17 @@ public class LdaUtil
     	}
     }
 
+	private static Integer getLabel(String fileName, ClassManager classManager)
+	{
+		String[] classNames = classManager.getClassNames();
+		for (int i = 0; i < classNames.length; i++) {
+			if(fileName.startsWith(classNames[i]))
+				return i;
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unused")
 	private static Integer getLabel(String fileName)
 	{
 		Map<String,Integer> labelMap =LabelUtil.loadLabel();
@@ -124,13 +138,15 @@ public class LdaUtil
 	 * @param theta
 	 * @param fileNames
 	 * @param writer
+	 * @param classManager
 	 */
-	public static void write(double[][] theta, List<String> fileNames, BufferedWriter writer) 
+	public static void write(double[][] theta, List<String> fileNames, 
+			BufferedWriter writer, ClassManager classManager) 
 	{
 		try {
 			for (int i = 0; i < theta.length; i++) {
 
-				writer.write( getLabel(fileNames.get(i)) + " ");
+				writer.write( getLabel(fileNames.get(i), classManager) + " ");
 
 				for (int j = 0; j < theta[0].length; j++) {
 					writer.write( (j+1) + ":" + theta[i][j] + " ");

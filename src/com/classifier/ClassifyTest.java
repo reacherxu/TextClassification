@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.classmanage.ClassManager;
+import com.hankcs.lda.TestCorpus;
+import com.svm.SVMMain;
 import com.svm.svm_predict;
 import com.svm.svm_scale;
 import com.svm.svm_train;
@@ -220,14 +222,52 @@ public class ClassifyTest {
 		doTestCalculate();
 		Log.log("testing is done!");
 	}
+	
+	/**
+	 * 直接根据svm的结果进行判断
+	 * @param test_path
+	 * @param result_path
+	 */
+	public void test(FileSet testSet, String test_path, String result_path) {
+		Log.log("begin testing!");
+		int count = classManager.getClassCount();
+		testFileCount = new int[count];
+		classifyResult = new int[count][count];
+		recalls = new double[count];
+		precisions = new double[count];
+		
+		String[] classnameStrings = classManager.getClassNames();
 
-	private ArrayList<Integer> readResult(String result_path) {
+		for (int i = 0; i < classnameStrings.length; i++) {
+			int classID = classManager.getClassID(classnameStrings[i]);
+			testFileCount[classID] = testSet.getCount(classnameStrings[i]);
+		}
+		
+		ArrayList<Integer> origin = readResult(test_path);
+		ArrayList<Integer> classifyID = readResult(result_path);
+		
+		for (int i = 0; i < origin.size(); i++) {
+			int classID = origin.get(i);
+			classifyResult[classID][classifyID.get(i)]++;
+		}
+
+		for (int i = 0; i < classifyResult.length; i++) {
+			for (int j = 0; j < classifyResult.length; j++)
+				System.out.print(classifyResult[i][j] + "\t");
+			System.out.println();
+		}
+		doTestCalculate();
+		Log.log("testing is done!");
+	}
+
+	private ArrayList<Integer> readResult(String path) {
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(result_path)));
+			BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
 			while(reader.ready()) {
 				String line = reader.readLine();
-				result.add((int)Double.parseDouble(line));
+				String label = line.split("\\s",2)[0];
+				result.add((int)Double.parseDouble(label));
 			}
 			reader.close();
 
@@ -467,9 +507,9 @@ public class ClassifyTest {
 
 	/**
 	 * @param args
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		/*FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
 		ClassifyTest test = new ClassifyTest();
 		//分类准备
@@ -483,22 +523,12 @@ public class ClassifyTest {
 		test.docPrediction(tmpDoc);
 		test.similarDocs(tmpDoc);
 		*/
-		//读入文档集
+		/*//读入文档集
 		FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
 		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
 		ClassifyTest test = new ClassifyTest();
 		//分类准备
 		test.prepare(trainSet);
-		
-//		String function = FeatureSelector.X2;
-//		int dimension = 500;
-		
-//		String result_path = "D:/fudan/result.txt";
-//		test.svm_predict(function, dimension, testSet, result_path);
-//		test.test(testSet, result_path);
-//		
-//		String outputPath = "svm_result/" + function + "_" + dimension + ".txt";
-//		test.outputResult(outputPath);
 		
 		//读入参数列表
 		Scanner scanner = new Scanner(new File("file/parameters_test"));
@@ -529,7 +559,26 @@ public class ClassifyTest {
 			
 			
 		}
-		scanner.close();
+		scanner.close();*/
+		
+		int t = 50;
+		
+		//读入文档集
+		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
+		ClassifyTest test = new ClassifyTest();
+		test.prepare(testSet);
+		
+		//输出svm文件
+		TestCorpus.generateSVMModel(t, test.classManager);
+		//libsvm进行预测
+		SVMMain.predict(t);
+				
+		String test_path = "d:/lda/test_"+t+".lda";
+		String result_path = "D:/lda/result_"+t+".txt";
+		String outputPath = "result/lda/lda_theta_" + t + ".txt";
+		
+		test.test(testSet, test_path,result_path);
+		test.outputResult(outputPath);
 		
 	}
 

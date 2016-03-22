@@ -1,95 +1,88 @@
 package com.hankcs.lda;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.ObjectInputStream;
 
+import com.classmanage.ClassManager;
 
-/**
- * @author hankcs
- */
 public class TestCorpus 
 {
-  /*  public void testAddDocument() throws Exception
-    {
-        List<String> doc1 = new ArrayList<String>();
-        doc1.add("hello");
-        doc1.add("word");
-        List<String> doc2 = new ArrayList<String>();
-        doc2.add("hankcs");
-        Corpus corpus = new Corpus();
-        corpus.addDocument(doc1);
-        corpus.addDocument(doc2);
-        System.out.println(corpus);
-    }*/
 
-    public static void main() throws Exception
-    {
-    	/*int t = 10;
-        // 1. Load corpus from disk
-        Corpus corpus = Corpus.load("D:\\lda\\ldaFileTrain\\");
-        // 2. Create a LDA sampler
-        LdaGibbsSampler ldaGibbsSampler = new LdaGibbsSampler(corpus.getDocument(), 
-        		corpus.getVocabularySize());
-        // 3. Train it with t subject
-        ldaGibbsSampler.gibbs(t);
-      
-        ObjectOutputStream oout = new ObjectOutputStream(new FileOutputStream("D:/lda/corpus_"+t+".lda"));
-        oout.writeObject(corpus);
-        oout.close();
-        
-        oout = new ObjectOutputStream(new FileOutputStream("D:/lda/gibbs_"+t+".lda"));
-        oout.writeObject(ldaGibbsSampler);
-        oout.close();
-        
-        System.out.println("serialization finished......");*/
-    	
-    	ObjectInputStream oin = new ObjectInputStream(new FileInputStream("D:/lda/corpus_10.lda"));
-    	Corpus corpus = (Corpus)oin.readObject();
-    	oin.close();
-    	
-    	oin = new ObjectInputStream(new FileInputStream("data/gibbs.lda"));
-    	LdaGibbsSampler ldaGibbsSampler = (LdaGibbsSampler)oin.readObject();
-    	oin.close();
-    	
-        
-        
-        // 4. The phi matrix is a LDA model, you can use LdaUtil to explain it.
-//        double[][] theta = ldaGibbsSampler.getTheta();
-      /*  double[][] phi = ldaGibbsSampler.getPhi();
-        double wordvec[] = LdaUtil.getVector(phi, corpus.getVocabulary(), "ÐÄ¾ªÈâÌø");
-        for (int i = 0; i < wordvec.length; i++) {
-			System.out.print(wordvec[i] + ",");
-		}*/
-//        Map<String, Double>[] topicMap = LdaUtil.translate(phi, corpus.getVocabulary(), 50);
-//        LdaUtil.explain(topicMap);
-       
-        
-        // 5. TODO:Predict. I'm not sure whether it works, it is not stable.
-       /* BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\lda\\train.lda"));
-        LdaUtil.write(theta, corpus.getFileNames(), writer);
-        writer.flush();
-        writer.close();
-        
-        System.out.println("test process started");
-        writer = new BufferedWriter(new FileWriter("D:\\lda\\test.lda"));
-        long start = System.currentTimeMillis();
-        File category = new File("D:\\temp\\mini\\test\\");
-        File[] files = category.listFiles();
-        for(File f : files) {
-        	int[] document = Corpus.loadDocument(f, corpus.getVocabulary());
-        	double[] tp = LdaGibbsSampler.inference(phi, document);
-//        	Map<String, Double> topic = LdaUtil.translate(tp, phi, corpus.getVocabulary(), 50);
-        	//        LdaUtil.explain(topic);
-        	LdaUtil.doc_explain(tp, f.getName(), writer);
-        }
-        long end = System.currentTimeMillis();
+	public static void generateSVMModel(int t, ClassManager classManager) throws Exception {
+		/* // 1. Load corpus from disk
+	        Corpus corpus = Corpus.load("D:\\lda\\ldaFileTrain\\");
+	        // 2. Create a LDA sampler
+	        LdaGibbsSampler ldaGibbsSampler = new LdaGibbsSampler(corpus.getDocument(), 
+	        		corpus.getVocabularySize());
+	        // 3. Train it with t subject
+	        ldaGibbsSampler.gibbs(t);
 
-        writer.flush();
-        writer.close();
-        System.out.println("test process ended,take " + (end-start) + " ms");*/
-        /*document = Corpus.loadDocument("data/mini/IT_110.txt", corpus.getVocabulary());
+	        ObjectOutputStream oout = new ObjectOutputStream(new FileOutputStream("D:/lda/corpus_"+t+".lda"));
+	        oout.writeObject(corpus);
+	        oout.close();
+
+	        oout = new ObjectOutputStream(new FileOutputStream("D:/lda/gibbs_"+t+".lda"));
+	        oout.writeObject(ldaGibbsSampler);
+	        oout.close();
+
+	        System.out.println("serialization finished......");*/
+
+		ObjectInputStream oin = new ObjectInputStream(new FileInputStream("D:/lda/corpus_" +t+ ".lda"));
+		Corpus corpus = (Corpus)oin.readObject();
+		oin.close();
+
+		oin = new ObjectInputStream(new FileInputStream("D:/lda/gibbs_" +t+ ".lda"));
+		LdaGibbsSampler ldaGibbsSampler = (LdaGibbsSampler)oin.readObject();
+		oin.close();
+
+
+
+		// 4. The phi matrix is a LDA model, you can use LdaUtil to explain it.
+		//	        double[][] theta = ldaGibbsSampler.getTheta();
+		/*  double[][] phi = ldaGibbsSampler.getPhi();
+	        double wordvec[] = LdaUtil.getVector(phi, corpus.getVocabulary(), "ÐÄ¾ªÈâÌø");
+	        for (int i = 0; i < wordvec.length; i++) {
+				System.out.print(wordvec[i] + ",");
+			}*/
+		//	        Map<String, Double>[] topicMap = LdaUtil.translate(phi, corpus.getVocabulary(), 50);
+		//	        LdaUtil.explain(topicMap);
+
+
+		// 5. TODO:Predict. I'm not sure whether it works, it is not stable.
+		double[][] theta = ldaGibbsSampler.getTheta();
+		double[][] phi = ldaGibbsSampler.getPhi();
+		BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\lda\\train_" +t+ ".lda"));
+		LdaUtil.write(theta, corpus.getFileNames(), writer , classManager);
+		writer.flush();
+		writer.close();
+
+		System.out.println("test process started");
+		writer = new BufferedWriter(new FileWriter("D:\\lda\\test_" +t+ ".lda"));
+		long start = System.currentTimeMillis();
+		File category = new File("D:\\lda\\ldaFileTest\\");
+		File[] files = category.listFiles();
+		for(File f : files) {
+			int[] document = Corpus.loadDocument(f, corpus.getVocabulary());
+			double[] tp = LdaGibbsSampler.inference(phi, document);
+			//	        	Map<String, Double> topic = LdaUtil.translate(tp, phi, corpus.getVocabulary(), 50);
+			//        LdaUtil.explain(topic);
+			LdaUtil.doc_explain(tp, f.getName(), writer, classManager);
+		}
+		long end = System.currentTimeMillis();
+
+		writer.flush();
+		writer.close();
+		System.out.println("test process ended,take " + (end-start) + " ms");
+	}
+	
+	public static void main(String[] args) throws Exception {
+
+		/* document = Corpus.loadDocument("data/mini/IT_110.txt", corpus.getVocabulary());
         tp = LdaGibbsSampler.inference(phi, document);
         topic = LdaUtil.translate(tp, phi, corpus.getVocabulary(), 10);
         LdaUtil.explain(topic);*/
-    }
+	}
 }

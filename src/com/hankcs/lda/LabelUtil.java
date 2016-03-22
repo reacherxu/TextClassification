@@ -11,7 +11,7 @@ public class LabelUtil {
 	public static Map<String,Integer> loadLabel() {
 		Map<String,Integer> labelMap = new HashMap<String,Integer>();
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("data/label"));
+			BufferedReader reader = new BufferedReader(new FileReader("file/label"));
 			
 			int i = 1;
 			while(reader.ready()) {
