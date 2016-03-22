@@ -561,24 +561,27 @@ public class ClassifyTest {
 		}
 		scanner.close();*/
 		
-		int t = 50;
+		int t[] = {20,30,40,60,70,80,90};
 		
-		//读入文档集
-		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
-		ClassifyTest test = new ClassifyTest();
-		test.prepare(testSet);
+		for (int i = 0; i < t.length; i++) {
+			//读入文档集
+			FileSet testSet = new FileSet("D:\\data\\fudan_subset_subset\\testSetFiles.txt");
+			ClassifyTest test = new ClassifyTest();
+			test.prepare(testSet);
+			
+			//输出svm文件
+			TestCorpus.generateSVMModel(t[i], test.classManager);
+			//libsvm进行预测
+			SVMMain.predict(t[i]);
+					
+			String test_path = "d:/lda/test_"+t[i]+".lda";
+			String result_path = "D:/lda/result_"+t[i]+".txt";
+			String outputPath = "result/lda/lda_theta_" + t[i] + ".txt";
+			
+			test.test(testSet, test_path,result_path);
+			test.outputResult(outputPath);
+		}
 		
-		//输出svm文件
-		TestCorpus.generateSVMModel(t, test.classManager);
-		//libsvm进行预测
-		SVMMain.predict(t);
-				
-		String test_path = "d:/lda/test_"+t+".lda";
-		String result_path = "D:/lda/result_"+t+".txt";
-		String outputPath = "result/lda/lda_theta_" + t + ".txt";
-		
-		test.test(testSet, test_path,result_path);
-		test.outputResult(outputPath);
 		
 	}
 

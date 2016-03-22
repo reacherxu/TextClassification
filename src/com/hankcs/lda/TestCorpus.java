@@ -3,39 +3,42 @@ package com.hankcs.lda;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import com.classmanage.ClassManager;
+import com.tools.Log;
 
 public class TestCorpus 
 {
 
 	public static void generateSVMModel(int t, ClassManager classManager) throws Exception {
-		/* // 1. Load corpus from disk
-	        Corpus corpus = Corpus.load("D:\\lda\\ldaFileTrain\\");
-	        // 2. Create a LDA sampler
-	        LdaGibbsSampler ldaGibbsSampler = new LdaGibbsSampler(corpus.getDocument(), 
-	        		corpus.getVocabularySize());
-	        // 3. Train it with t subject
-	        ldaGibbsSampler.gibbs(t);
+		// 1. Load corpus from disk
+		Corpus corpus = Corpus.load("D:\\lda\\ldaFileTrain\\");
+		// 2. Create a LDA sampler
+		LdaGibbsSampler ldaGibbsSampler = new LdaGibbsSampler(corpus.getDocument(), 
+				corpus.getVocabularySize());
+		// 3. Train it with t subject
+		ldaGibbsSampler.gibbs(t);
 
-	        ObjectOutputStream oout = new ObjectOutputStream(new FileOutputStream("D:/lda/corpus_"+t+".lda"));
-	        oout.writeObject(corpus);
-	        oout.close();
+		ObjectOutputStream oout = new ObjectOutputStream(new FileOutputStream("D:/lda/corpus_"+t+".lda"));
+		oout.writeObject(corpus);
+		oout.close();
 
-	        oout = new ObjectOutputStream(new FileOutputStream("D:/lda/gibbs_"+t+".lda"));
-	        oout.writeObject(ldaGibbsSampler);
-	        oout.close();
+		oout = new ObjectOutputStream(new FileOutputStream("D:/lda/gibbs_"+t+".lda"));
+		oout.writeObject(ldaGibbsSampler);
+		oout.close();
 
-	        System.out.println("serialization finished......");*/
+		Log.log("serialization finished......");
 
 		ObjectInputStream oin = new ObjectInputStream(new FileInputStream("D:/lda/corpus_" +t+ ".lda"));
-		Corpus corpus = (Corpus)oin.readObject();
+		corpus = (Corpus)oin.readObject();
 		oin.close();
 
 		oin = new ObjectInputStream(new FileInputStream("D:/lda/gibbs_" +t+ ".lda"));
-		LdaGibbsSampler ldaGibbsSampler = (LdaGibbsSampler)oin.readObject();
+		ldaGibbsSampler = (LdaGibbsSampler)oin.readObject();
 		oin.close();
 
 
@@ -59,7 +62,7 @@ public class TestCorpus
 		writer.flush();
 		writer.close();
 
-		System.out.println("test process started");
+		Log.log("test process started");
 		writer = new BufferedWriter(new FileWriter("D:\\lda\\test_" +t+ ".lda"));
 		long start = System.currentTimeMillis();
 		File category = new File("D:\\lda\\ldaFileTest\\");
@@ -75,9 +78,9 @@ public class TestCorpus
 
 		writer.flush();
 		writer.close();
-		System.out.println("test process ended,take " + (end-start) + " ms");
+		Log.log("test process ended,take " + (end-start) + " ms");
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 
 		/* document = Corpus.loadDocument("data/mini/IT_110.txt", corpus.getVocabulary());
