@@ -11,7 +11,7 @@ import java.util.Set;
 import com.word2vec.util.Tokenizer;
 
 public class TestWord2Vec {
-
+	private final static String modelFilePath = "D:/temp/w2v_law_corpus_50.nn";
     public static void readByJava(String textFilePath, String modelFilePath){
 
         Word2Vec wv = new Word2Vec.Factory()
@@ -47,7 +47,7 @@ public class TestWord2Vec {
     }
     
     public static void getVector(String word) {
-    	VectorModel vm = VectorModel.loadFromFile("D:/temp/w2v_corpus_100.nn");
+    	VectorModel vm = VectorModel.loadFromFile(modelFilePath);
     	float[]  vec = vm.getWordVector(word);
     	System.out.println("vec.length:" + vec.length);
     	for (int i = 0; i < vec.length; i++) {
@@ -62,11 +62,10 @@ public class TestWord2Vec {
 
     public static void main(String[] args){
 
-        String textFilePath = "D:\\temp\\fudan_subset_subset\\file.w2v";
-        String modelFilePath = "D:/temp/w2v_corpus_100.nn";
+        String textFilePath = "D:\\temp\\law-article\\file.w2v";
         readByJava(textFilePath, modelFilePath);
 //        dist(modelFilePath);
-        getVector("材料");
+        getVector("被告人");
 //        testVector("材料", modelFilePath);
     }
 

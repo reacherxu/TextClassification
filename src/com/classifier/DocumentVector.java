@@ -25,21 +25,21 @@ public class DocumentVector {
 	double[] tf;
 	double[] tf_idf;
 	private String docPosition;
-	final int dimension = 100;
+	final int dimension = 50;
 	double[] wordVec = new double[dimension];
 	/**
 	 * word2vec   
 	 */
-	Boolean word2vec = false;  
+	Boolean word2vec = true;  
 	/**
 	 * lda
 	 */
-	Boolean lda = true;
+	Boolean lda = false;
 	
 	/**
 	 * word2vec  model
 	 */
-	String modelFilePath = "D:/temp/w2v_corpus_100.nn";
+	String modelFilePath = "D:/temp/w2v_law_corpus_50.nn";
 	
 	/**
 	 * lda model
@@ -151,10 +151,11 @@ public class DocumentVector {
 			if(tf[i] != 0)
 				ID = ID + " " + (i + 1) + ":" + tf_idf[i];
 		
-		for (int i = tf.length; i < tf.length+wordVec.length; i++) {
-			if(wordVec[i - tf.length] != 0)
-				ID = ID + " " + (i + 1) + ":" + wordVec[i - tf.length];
-		}
+		if(word2vec || lda) 
+			for (int i = tf.length; i < tf.length+wordVec.length; i++) {
+				if(wordVec[i - tf.length] != 0)
+					ID = ID + " " + (i + 1) + ":" + wordVec[i - tf.length];
+			}
 		return ID;
 	}
 }

@@ -3,10 +3,8 @@ package com.hankcs.lda;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import com.classmanage.ClassManager;
 import com.tools.Log;
@@ -15,7 +13,7 @@ public class TestCorpus
 {
 
 	public static void generateSVMModel(int t, ClassManager classManager) throws Exception {
-		// 1. Load corpus from disk
+		/*// 1. Load corpus from disk
 		Corpus corpus = Corpus.load("D:\\lda\\ldaFileTrain\\");
 		// 2. Create a LDA sampler
 		LdaGibbsSampler ldaGibbsSampler = new LdaGibbsSampler(corpus.getDocument(), 
@@ -31,14 +29,14 @@ public class TestCorpus
 		oout.writeObject(ldaGibbsSampler);
 		oout.close();
 
-		Log.log("serialization finished......");
+		Log.log("serialization finished......");*/
 
 		ObjectInputStream oin = new ObjectInputStream(new FileInputStream("D:/lda/corpus_" +t+ ".lda"));
-		corpus = (Corpus)oin.readObject();
+		Corpus corpus = (Corpus)oin.readObject();
 		oin.close();
 
 		oin = new ObjectInputStream(new FileInputStream("D:/lda/gibbs_" +t+ ".lda"));
-		ldaGibbsSampler = (LdaGibbsSampler)oin.readObject();
+		LdaGibbsSampler ldaGibbsSampler = (LdaGibbsSampler)oin.readObject();
 		oin.close();
 
 

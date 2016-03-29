@@ -95,7 +95,8 @@ public class FeatureSelector {
 			int classID = classManager.getClassID(document.getClassNameString());
 			while (iterator.hasNext()) {
 				String feature = iterator.next();  //特征为词
-				if (!stopWordHandler.isStopWord(feature)) {
+				//TODO  特征方面  去除一个字的词
+				if (!stopWordHandler.isStopWord(feature) && feature.length() >=2 ) {
 					if (!hasFeature(feature))
 						addFeature(feature);
 					increaseFeatureCount(feature, classID);

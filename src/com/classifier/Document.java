@@ -54,6 +54,10 @@ public class Document extends HashMap<String, Integer> {
 
 	private String filter(String str) {
 		String wt[] = str.split("/");
+		
+		if( wt.length < 2)
+			return null;
+		
 		String item = wt[0];
 		String ext = wt[1];
 		

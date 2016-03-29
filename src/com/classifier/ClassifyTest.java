@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.classmanage.ClassManager;
-import com.hankcs.lda.TestCorpus;
-import com.svm.SVMMain;
 import com.svm.svm_predict;
 import com.svm.svm_scale;
 import com.svm.svm_train;
@@ -523,9 +521,9 @@ public class ClassifyTest {
 		test.docPrediction(tmpDoc);
 		test.similarDocs(tmpDoc);
 		*/
-		/*//读入文档集
-		FileSet trainSet = new FileSet("D:\\temp\\fudan_subset_subset\\trainSetFiles.txt");
-		FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
+		//读入文档集   D:\\temp\\fudan_subset_subset
+		FileSet trainSet = new FileSet("D:\\temp\\law-article\\trainSetFiles.txt");
+		FileSet testSet = new FileSet("D:\\temp\\law-article\\testSetFiles.txt");
 		ClassifyTest test = new ClassifyTest();
 		//分类准备
 		test.prepare(trainSet);
@@ -546,7 +544,7 @@ public class ClassifyTest {
 				test.test(testSet, result_path);
 
 //				test.test(testSet, function, dimension);
-				String outputPath = "result/lda/" + function + "_" + dimension + ".txt";
+				String outputPath = "result/law/" + function + "_" + dimension + ".txt";
 				test.outputResult(outputPath);
 				
 				long end = System.currentTimeMillis();
@@ -559,17 +557,18 @@ public class ClassifyTest {
 			
 			
 		}
-		scanner.close();*/
+		scanner.close();
 		
-		int t[] = {20,30,40,60,70,80,90};
+		/*int t[] = {20};
 		
 		for (int i = 0; i < t.length; i++) {
 			//读入文档集
-			FileSet testSet = new FileSet("D:\\data\\fudan_subset_subset\\testSetFiles.txt");
+			FileSet testSet = new FileSet("D:\\temp\\fudan_subset_subset\\testSetFiles.txt");
 			ClassifyTest test = new ClassifyTest();
 			test.prepare(testSet);
 			
 			//输出svm文件
+			//TODO　注意字符集
 			TestCorpus.generateSVMModel(t[i], test.classManager);
 			//libsvm进行预测
 			SVMMain.predict(t[i]);
@@ -580,7 +579,7 @@ public class ClassifyTest {
 			
 			test.test(testSet, test_path,result_path);
 			test.outputResult(outputPath);
-		}
+		}*/
 		
 		
 	}

@@ -1,0 +1,25 @@
+subject:		C11-Space		C7-History		C19-Computer		C3-Art		C32-Agriculture		C31-Enviornment		C39-Sports		C34-Economy		
+
+recall:		.66910		.00000		.91335		.41370		.05556		.66256		.97590		.05160		
+
+pricise:		.79023		?		.86475		.67713		.94118		.87338		.23574		.95455		
+
+F1:		.72464		?		.88838		.51361		.10492		.75350		.37975		.09790		
+
+
+
+
+subject:		total
+
+Mac_r		0.4677206413661167
+
+Mac_p		NaN
+
+Mac_f1		NaN
+
+Mic_r		0.4946550048590865
+
+Mic_p		0.4946550048590865
+
+Mic_f1		0.4946550048590865
+

@@ -21,7 +21,7 @@ public class FileSetTransformation {
 		//记录每类下文件数量
 		File rootDir = new File(root);
 		String fileNames[] = rootDir.list();
-		int count = 0;
+		/*int count = 0;
 		for (int i = 0; i < fileNames.length; i++) {
 			String classPath = root + fileNames[i] + "/";
 			count += new File(classPath).list().length;
@@ -37,7 +37,7 @@ public class FileSetTransformation {
 			writer.print(new File(classPath).list().length);
 			writer.print(" ");
 		}
-		writer.println();
+		writer.println();*/
 
 		/*
 		 *对每个类下的文件记录词频 
@@ -66,8 +66,8 @@ public class FileSetTransformation {
 			
 			String content = DocumentReader.readFile(filePath);
 			
-			writer.print(className + ":" + filelist[i]);
-			writer.print(" ");
+//			writer.print(className.trim() + ":" + filelist[i].trim());
+//			writer.print(" ");
 			fileTrainFormation(className, content, writer);
 		}
 	}
@@ -105,7 +105,7 @@ public class FileSetTransformation {
 		content = DocumentPrepare.prepare(content);
 		ChineseSplitter splitter = ChineseSplitter.getInstance();
 		String[] words = splitter.split(content);
-		for (int i = 0; i < words.length; i++) {
+		/*for (int i = 0; i < words.length; i++) {
 			if (!words[i].trim().equals("")) {
 				if (map.containsKey(words[i])) {
 					int count = map.get(words[i]);
@@ -121,6 +121,13 @@ public class FileSetTransformation {
 			writer.print(":");
 			writer.print(map.get(word));
 			writer.print(" ");
+		}*/
+		for (int i = 0; i < words.length; i++) {
+			String word = filter(words[i]);
+			if( word != null ) {
+				writer.print(word);
+				writer.print(" ");
+			}
 		}
 		writer.println();
 	}
@@ -193,15 +200,14 @@ public class FileSetTransformation {
 	 */
 	public static void main(String[] args) throws IOException {
 		FileSetTransformation transformation = new FileSetTransformation();
-		
-		transformation.trainformation("D:\\temp\\fudan_subset_subset\\test\\");
+//		transformation.trainformation("D:\\temp\\fudan_subset_subset\\test\\");
 //		transformation.fileTransformation("d:/C11-Space0028.txt");
-	/*	Log.log("test files transformation started......");
-		transformation.trainformation("D:\\temp\\corpus_mini\\test", "D:\\temp\\corpus_mini\\testSetFiles.txt");
-		Log.log("test files transformation ended......");
+//		Log.log("test files transformation started......");
+//		transformation.trainformation("D:\\temp\\law-article\\test", "D:\\temp\\law-article\\testSetFiles.txt");
+//		Log.log("test files transformation ended......");
 		
 		Log.log("train files files transformation started......");
-		transformation.trainformation("D:\\temp\\corpus_mini\\train", "D:\\temp\\corpus_mini\\trainSetFiles.txt");
-		Log.log("train files transformation ended......");*/
+		transformation.trainformation("D:\\temp\\law-article\\train", "D:\\temp\\law-article\\file.w2v");
+		Log.log("train files transformation ended......");
 	}
 }

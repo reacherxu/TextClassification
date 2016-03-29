@@ -69,7 +69,7 @@ public class Word2Vec {
 
     public static class Factory {
 
-        private int vectorSize = 100;
+        private int vectorSize = 50;
         private int windowSize = 5;
         private int freqThresold = 5;
 
